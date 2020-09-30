@@ -1,25 +1,10 @@
 from PyQt5 import QtGui, QtWidgets, uic
 import sys, time
 import serial_manager
+import truffle
 import re
 from threading import Thread
 import time
-
-
-def decode_data(raw_data):
-    try:
-        raw_payload = re.search("(?<=\#)(.*?)(?=\#)", raw_data.decode("utf-8"))
-        payload = raw_payload[0].split(":")
-        sender = payload[0]
-        receiver = payload[1]
-        data = payload[2].split("-")
-        return [sender, receiver, data]
-    except TypeError:
-        return ["", "", ""]
-    except Exception as e:
-        print("Unable to decode payload data")
-        print(e)
-        return ["","",""]
 
 
 class Ui(QtWidgets.QDialog):
@@ -40,6 +25,8 @@ class Ui(QtWidgets.QDialog):
         self.listview_hardware_serial_monitor = self.findChild(QtWidgets.QListView, 'listview_hardware_serial_monitor')
 
         self.checkbox_hardware_autoscroll = self.findChild(QtWidgets.QCheckBox, 'checkbox_hardware_autoscroll')
+
+        self.lcd_temperature = self.findChild(QtWidgets.QLCDNumber, 'lcd_temperature')
 
         self.show()
 
@@ -78,11 +65,13 @@ class Ui(QtWidgets.QDialog):
         self.listview_hardware_serial_monitor.setModel(model_serial_monitor)
         while True:
             text = serial_manager.srl.readline()
-            payload = decode_data(text)
+            payload = truffle.decode_data(text)
             if not (payload[0] == "" and payload[1] == "" and payload[2] == ""):
                 print("%s >> %s: %s" % (payload[0], payload[1], payload[2]))
                 serial_content = QtGui.QStandardItem("%s >> %s: %s" % (payload[0], payload[1], payload[2]))
                 model_serial_monitor.appendRow(serial_content)
+
+            self.lcd_temperature.display(80)
 
     def scroll_serial_monitor(self):
         while True:
