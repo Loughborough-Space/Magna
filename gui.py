@@ -94,5 +94,5 @@ def main():
     Ui.start_serial_monitor(window)
     app.exec_()
 
-
-main()
+if __name__ == "__main__":
+    main()
