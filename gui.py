@@ -19,6 +19,9 @@ class Ui(QtWidgets.QDialog):
         self.button_control_estop = self.findChild(QtWidgets.QPushButton, 'button_control_estop')
         self.button_control_estop.clicked.connect(self.estop)
 
+        self.button_control_fire = self.findChild(QtWidgets.QPushButton, 'button_control_fire')
+        self.button_control_fire.clicked.connect(self.fire)
+
         self.hardware_listview_ports = self.findChild(QtWidgets.QListView, 'hardware_listview_ports')
         # self.hardware_listview_ports.selectionModel().selectionChanged.connect(self.hardware_listview_ports())
         self.hardware_listview_portInfo = self.findChild(QtWidgets.QListView, 'hardware_listview_portInfo')
@@ -81,9 +84,15 @@ class Ui(QtWidgets.QDialog):
 
     def auto(self):
         print("auto function")
+        serial_manager.srl.write('auto'.encode('utf-8'))
 
     def estop(self):
         print("estop function")
+        serial_manager.srl.write('estop'.encode('utf-8'))
+
+    def fire(self):
+        print("fire function")
+        serial_manager.srl.write('fire'.encode('utf-8'))
 
 
 def main():
