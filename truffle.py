@@ -34,3 +34,27 @@ def decode_data(raw_data):
         print("Unable to decode payload data")
         print(e)
         return ["","",""]
+
+def encode_data(header, data):
+"""Take header as list [DAT, LP, CC]
+Take data as list example ['TEMPERATURE:22', 'LOAD:50']
+returns string"""
+    j = ["#"]
+    j.append("<")
+    for i in range(len(header)):
+        j.append(header[i])
+        j.append(":")
+    j.pop()
+    j.append(">")
+    for i in range(len(data)):
+        j.append(data[i])
+        j.append("~")
+    j.pop()
+    j.append("#")
+    x = ""
+    for i in range(len(j)):
+        x = x + j[i]
+    return x
+    
+    
+    
