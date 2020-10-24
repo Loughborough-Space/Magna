@@ -36,7 +36,7 @@ def decode_data(raw_data):
         return ["","",""]
 
 def encode_data(header, data):
-"""Take header as list [DAT, LP, CC]
+    """Take header as list [DAT, LP, CC]
 Take data as list example ['TEMPERATURE:22', 'LOAD:50']
 returns string"""
     j = ["#"]
