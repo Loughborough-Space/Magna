@@ -2,7 +2,7 @@ import sys
 import glob
 import serial
 import serial.tools.list_ports
-
+import datalogger
 
 def serial_ports():
     """ Lists serial port names
@@ -36,7 +36,10 @@ def serial_ports():
 def get_serial(COM):
     global srl
     srl = serial.Serial(COM, 9600, timeout=0.1)
-
+    #adds portnumber to global variable
+    global portnumber = COM
+    #start dataloging (run in seprate thread)
+    datalogger.datalog(portnumber)
     if not (srl.dtr or srl.rts):
         srl.open()
     print("Serial Port on '%s' opened" % COM)
